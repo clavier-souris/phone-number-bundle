@@ -32,6 +32,12 @@ class PhoneNumberType extends AbstractType
     const WIDGET_SINGLE_TEXT = 'single_text';
     const WIDGET_COUNTRY_CHOICE = 'country_choice';
 
+    private $session;
+    public function __construct($session)
+    {
+        $this->session = $session;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -60,7 +66,7 @@ class PhoneNumberType extends AbstractType
 
             $countryChoices = array();
 
-            foreach (Intl::getRegionBundle()->getCountryNames() as $region => $name) {
+            foreach (Intl::getRegionBundle()->getCountryNames($this->session->get('locale') || $options['default_region']) as $region => $name) {
                 if (false === isset($countries[$region])) {
                     continue;
                 }
